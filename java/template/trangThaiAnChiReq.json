@@ -18,7 +18,7 @@
         },
         "bodyReq": {
             "functionCode": "FLEXCASH-REST-TRANGTHAIANCHI-BASICAUTH",
-            "serial": "[0]"
+            "getCommodityStatus": [[0]]
         }
     }
 }

@@ -1,6 +1,7 @@
 trangThaiAnChiRes.responseStatus.status
 trangThaiAnChiRes.responseStatus.globalErrorCode
 trangThaiAnChiRes.responseStatus.globalErrorDescription
-trangThaiAnChiRes.bodyRes.serial
-trangThaiAnChiRes.bodyRes.com
-trangThaiAnChiRes.bodyRes.status
+trangThaiAnChiRes.bodyRes.listCommodity.serial
+trangThaiAnChiRes.bodyRes.listCommodity.com
+trangThaiAnChiRes.bodyRes.listCommodity.status
+trangThaiAnChiRes.bodyRes.listCommodity.MD

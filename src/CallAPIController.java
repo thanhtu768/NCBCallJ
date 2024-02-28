@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +24,7 @@ import com.google.gson.JsonParser;
 import Model.CommonInfoESB;
 import Model.ESBRequestHeader;
 import Model.T24ParamModel;
+import javafx.scene.Parent;
 
 public class CallAPIController {
 
@@ -218,11 +221,12 @@ public class CallAPIController {
             os.close();
             if (conn.getResponseCode() != 200)
                 return "Http error code : " + conn.getResponseCode() + " - " + conn.getResponseMessage();
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(),CHARSET_DEFAULT));
             String output;
             while ((output = br.readLine()) != null)
                 jsonResponse = String.valueOf(jsonResponse) + output;       
             br.close();
+            jsonResponse = Text2Normal(jsonResponse);
             if(isFullResponse)
                 return jsonResponse;
             
@@ -237,9 +241,18 @@ public class CallAPIController {
             throw e;
         }
     }
-    
+    private static String Text2Normal(String inputStr){
+        try {
+            String temp = Normalizer.normalize(inputStr, Normalizer.Form.NFD);
+            Pattern parent = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return parent.matcher(temp).replaceAll("");
+        } catch (Exception e) {
+            return inputStr;
+        }
+    }
     public static String BuildResponseResultByConfig(JsonObject resBody){
         try {
+            //Normal text
             List<String> resParam = ConfigReader.GetResponseConfContent(paramModel.endPointName);
             List<String> T24FormatResponse = new ArrayList<String>();
             for (String cItem : resParam) {
